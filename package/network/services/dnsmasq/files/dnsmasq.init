@@ -1174,6 +1174,7 @@ dnsmasq_start()
 	config_foreach filter_dnsmasq ipset dnsmasq_ipset_add "$cfg"
 	echo >> $CONFIGFILE_TMP
 
+	echo >> $CONFIGFILE_TMP
 	mv -f $CONFIGFILE_TMP $CONFIGFILE
 	mv -f $HOSTFILE_TMP $HOSTFILE
 
@@ -1212,6 +1213,7 @@ dnsmasq_start()
 		[ ! -e "$logfacility" ] && touch "$logfacility"
 		procd_add_jail_mount_rw "$logfacility"
 	esac
+	[ -e "$hostsfile" ] && procd_add_jail_mount $hostsfile
 
 	procd_close_instance
 	
