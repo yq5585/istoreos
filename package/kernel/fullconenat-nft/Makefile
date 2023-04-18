@@ -20,8 +20,6 @@ PKG_SOURCE_URL_FILE:=$(PKG_SOURCE_VERSION).tar.gz
 PKG_SOURCE_URL:=https://github.com/fullcone-nat-nftables/nft-fullcone/archive/
 PKG_HASH:=85855763baae31b5859af1d374f5cb44a3683075620aeb61ef2b83babb405752
 
-PKG_BUILD_DIR:=$(BUILD_DIR)/$(PKG_NAME)-$(PKG_VERSION)
-
 PKG_LICENSE:=GPL-2.0-only
 PKG_LICENSE_FILES:=LICENSE
 PKG_MAINTAINER:=Syrone Wong <wong.syrone@gmail.com>
