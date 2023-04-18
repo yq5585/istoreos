@@ -9,18 +9,22 @@ include $(TOPDIR)/rules.mk
 include $(INCLUDE_DIR)/kernel.mk
 
 PKG_NAME:=fullconenat
+PKG_VERSION:=2022-02-13
 PKG_RELEASE:=6
 
-PKG_SOURCE_DATE:=2022-02-13
-PKG_SOURCE_PROTO:=git
-PKG_SOURCE_URL:=https://github.com/llccd/netfilter-full-cone-nat.git
 PKG_SOURCE_VERSION:=108a36cbdca17e68c9e6e7fd5e26156a88f738e8
-PKG_MIRROR_HASH:=00d749235271dee194dcd23c22e6e85207ea90192a62a110b2af0b4e4de1971f
+PKG_HASH:=529bad01c03fac7c1356f78222314278e5b5f16e5e40beaf738ad4372bb435c1
+PKG_SOURCE_URL_FILE:=$(PKG_SOURCE_VERSION).tar.gz
+PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz
+PKG_SOURCE_URL:=https://github.com/llccd/netfilter-full-cone-nat/archive/
 
 PKG_LICENSE:=GPL-2.0
 PKG_LICENSE_FILES:=LICENSE
 
 include $(INCLUDE_DIR)/package.mk
+
+TAR_OPTIONS+= --strip-components 1
+TAR_CMD=$(HOST_TAR) -C $(1) $(TAR_OPTIONS)
 
 define Package/iptables-mod-fullconenat
   SUBMENU:=Firewall
