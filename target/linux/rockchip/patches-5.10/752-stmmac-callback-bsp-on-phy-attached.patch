@@ -8,11 +8,9 @@ Subject: [PATCH] drivers/net/stmmac: add callback to bsp when phy attached
  include/linux/stmmac.h                            | 2 ++
  2 files changed, 7 insertions(+)
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-index 9cbc0179d..04526788f 100644
 --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
 +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-@@ -2651,6 +2651,11 @@ static int stmmac_open(struct net_device *dev)
+@@ -2878,6 +2878,11 @@ static int stmmac_open(struct net_device
  		}
  	}
  
@@ -24,25 +22,12 @@ index 9cbc0179d..04526788f 100644
  	/* Extra statistics */
  	memset(&priv->xstats, 0, sizeof(struct stmmac_extra_stats));
  	priv->xstats.threshold = tc;
-diff --git a/include/linux/stmmac.h b/include/linux/stmmac.h
-index dc60d03c4..04aa2c238 100644
 --- a/include/linux/stmmac.h
 +++ b/include/linux/stmmac.h
-@@ -13,6 +13,7 @@
- #define __STMMAC_PLATFORM_DATA
- 
- #include <linux/platform_device.h>
-+#include <linux/phy.h>
- 
- #define MTL_MAX_RX_QUEUES	8
- #define MTL_MAX_TX_QUEUES	8
-@@ -179,5 +180,6 @@ struct plat_stmmacenet_data {
- 	int mac_port_sel_speed;
- 	bool en_tx_lpi_clockgating;
- 	int has_xgmac;
+@@ -205,5 +205,6 @@ struct plat_stmmacenet_data {
+ 	u8 vlan_fail_q;
+ 	unsigned int eee_usecs_rate;
+ 	bool sph_disable;
 +	void (*fix_phy)(void *priv, struct phy_device *phy);
  };
  #endif
--- 
-2.31.0
-

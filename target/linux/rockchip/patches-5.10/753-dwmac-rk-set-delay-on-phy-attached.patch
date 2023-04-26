@@ -7,11 +7,9 @@ Subject: [PATCH] drivers/net/stmmac: dwmac-rk set mac delay on phy attached
  .../net/ethernet/stmicro/stmmac/dwmac-rk.c    | 40 +++++++++++++++++++
  1 file changed, 40 insertions(+)
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-rk.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-rk.c
-index 9f9aaa47a..ba2c85213 100644
 --- a/drivers/net/ethernet/stmicro/stmmac/dwmac-rk.c
 +++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-rk.c
-@@ -1210,6 +1210,43 @@ static int phy_power_on(struct rk_priv_data *bsp_priv, bool enable)
+@@ -1210,6 +1210,43 @@ static int phy_power_on(struct rk_priv_d
  	return 0;
  }
  
@@ -55,7 +53,7 @@ index 9f9aaa47a..ba2c85213 100644
  static struct rk_priv_data *rk_gmac_setup(struct platform_device *pdev,
  					  struct plat_stmmacenet_data *plat,
  					  const struct rk_gmac_ops *ops)
-@@ -1272,6 +1309,9 @@ static struct rk_priv_data *rk_gmac_setup(struct platform_device *pdev,
+@@ -1272,6 +1309,9 @@ static struct rk_priv_data *rk_gmac_setu
  		bsp_priv->rx_delay = value;
  	}
  
@@ -65,6 +63,3 @@ index 9f9aaa47a..ba2c85213 100644
  	bsp_priv->grf = syscon_regmap_lookup_by_phandle(dev->of_node,
  							"rockchip,grf");
  
--- 
-2.31.0
-

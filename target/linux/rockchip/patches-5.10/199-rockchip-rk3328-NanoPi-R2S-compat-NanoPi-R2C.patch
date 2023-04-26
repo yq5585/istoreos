@@ -1,6 +1,6 @@
 --- a/arch/arm64/boot/dts/rockchip/rk3328-nanopi-r2s.dts
 +++ b/arch/arm64/boot/dts/rockchip/rk3328-nanopi-r2s.dts
-@@ -137,7 +137,7 @@
+@@ -141,7 +141,7 @@
  	assigned-clocks = <&cru SCLK_MAC2IO>, <&cru SCLK_MAC2IO_EXT>;
  	assigned-clock-parents = <&gmac_clk>, <&gmac_clk>;
  	clock_in_out = "input";
@@ -9,13 +9,11 @@
  	phy-mode = "rgmii";
  	phy-supply = <&vcc_io_33>;
  	pinctrl-0 = <&rgmiim1_pins>;
-@@ -152,10 +152,10 @@
+@@ -156,8 +156,10 @@
  		#address-cells = <1>;
  		#size-cells = <0>;
  
 -		rtl8211e: ethernet-phy@1 {
--			compatible = "ethernet-phy-id001c.c915",
--				     "ethernet-phy-ieee802.3-c22";
 -			reg = <1>;
 +		gmac2iophy: ethernet-phy {
 +			compatible = "ethernet-phy-ieee802.3-c22";

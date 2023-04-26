@@ -15,24 +15,24 @@ Signed-off-by: hmz007 <hmz007@gmail.com>
 
 --- a/drivers/net/phy/Kconfig
 +++ b/drivers/net/phy/Kconfig
-@@ -519,6 +519,11 @@ config MICROSEMI_PHY
- 	---help---
+@@ -302,6 +302,11 @@ config MICROSEMI_PHY
+ 	help
  	  Currently supports VSC8514, VSC8530, VSC8531, VSC8540 and VSC8541 PHYs
  
 +config MOTORCOMM_PHY
 +	tristate "Motorcomm PHYs"
-+	---help---
++	help
 +	  Supports the YT8010, YT8510, YT8511, YT8512 PHYs.
 +
  config NATIONAL_PHY
  	tristate "National Semiconductor PHYs"
- 	---help---
+ 	help
 --- a/drivers/net/phy/Makefile
 +++ b/drivers/net/phy/Makefile
-@@ -98,6 +98,7 @@ obj-$(CONFIG_MICREL_PHY)	+= micrel.o
+@@ -83,6 +83,7 @@ obj-$(CONFIG_MICREL_PHY)	+= micrel.o
  obj-$(CONFIG_MICROCHIP_PHY)	+= microchip.o
  obj-$(CONFIG_MICROCHIP_T1_PHY)	+= microchip_t1.o
- obj-$(CONFIG_MICROSEMI_PHY)	+= mscc.o
+ obj-$(CONFIG_MICROSEMI_PHY)	+= mscc/
 +obj-$(CONFIG_MOTORCOMM_PHY)	+= motorcomm.o
  obj-$(CONFIG_NATIONAL_PHY)	+= national.o
  obj-$(CONFIG_NXP_TJA11XX_PHY)	+= nxp-tja11xx.o
