@@ -1,6 +1,6 @@
 define Device/rk3568
   SOC := rk3568
-  DEVICE_DTS_DIR := ../rk3568/dts
+  DEVICE_DTS_DIR := ../dts/rk3568
   DEVICE_DTS = $$(SOC)-$$(lastword $$(subst _, ,$$(DEVICE_NAME)))
   UBOOT_DEVICE_NAME := easepi-rk3568
   IMAGE/sysupgrade.img.gz := boot-common | boot-script rk3568 | pine64-img | gzip | append-metadata
@@ -13,7 +13,7 @@ endef
 
 define Device/rk3588
   SOC := rk3588
-  DEVICE_DTS_DIR := ../rk3588/dts
+  DEVICE_DTS_DIR := ../dts/rk3588
   DEVICE_DTS = $$(SOC)-$$(lastword $$(subst _, ,$$(DEVICE_NAME)))
   UBOOT_DEVICE_NAME := easepi-rk3588
   IMAGE/sysupgrade.img.gz := boot-common | boot-script rk3588 | pine64-img | gzip | append-metadata
