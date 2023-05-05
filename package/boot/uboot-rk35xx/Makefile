@@ -23,7 +23,7 @@ endef
 
 # RK3568 boards
 define U-Boot/easepi-rk3568
-  BUILD_SUBTARGET:=rk3568
+  BUILD_SUBTARGET:=rk35xx
   DEFAULT:=y
   NAME:=RK3568 Generic
   DEPENDS:=+PACKAGE_u-boot-easepi-rk3568:arm-trusted-firmware-rk3568
