@@ -18,6 +18,8 @@ set_iface_cpumask() {
     local irq
     local seconds
 
+    [[ -d "/sys/class/net/${interface}" ]] || return 1
+
     [[ -z "${device}" || "${device}" = "${interface}-0" ]] && ip link set dev "${interface}" up
 
     [[ -z "${device}" ]] && device="$interface"
