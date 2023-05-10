@@ -269,11 +269,11 @@
 };
 
 &dfi {
-	status = "disabled";
+	status = "okay";
 };
 
 &dmc {
-	status = "disabled";
+	status = "okay";
 };
 
 &bus_npu {
