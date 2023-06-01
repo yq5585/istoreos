@@ -91,3 +91,12 @@ $(call Device/rk3568)
   DEVICE_PACKAGES := kmod-r8125 kmod-nvme kmod-scsi-core
 endef
 TARGET_DEVICES += firefly_station-p2
+
+define Device/friendlyarm_nanopi-r6s
+$(call Device/rk3588)
+  DEVICE_VENDOR := FriendlyARM
+  DEVICE_MODEL := NanoPi R6S
+  SUPPORTED_DEVICES += friendlyelec,nanopi-r6s
+  DEVICE_PACKAGES := kmod-r8125 kmod-nvme kmod-scsi-core
+endef
+TARGET_DEVICES += friendlyarm_nanopi-r6s

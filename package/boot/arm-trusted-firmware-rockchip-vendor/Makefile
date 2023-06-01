@@ -1,81 +1,71 @@
 # SPDX-License-Identifier: GPL-2.0-only
 #
-# Copyright (C) 2022 ImmortalWrt.org
+# Copyright (C) 2021-2023 ImmortalWrt.org
 
 include $(TOPDIR)/rules.mk
+include $(INCLUDE_DIR)/trusted-firmware-a.mk
 
-PKG_NAME:=arm-trusted-firmware-rockchip-vendor
-PKG_RELEASE:=$(AUTORELEASE)
+PKG_NAME:=rkbin
+PKG_VERSION:=linux-5.10-gen-rkr4
+PKG_RELEASE:=1
 
-PKG_SOURCE_VERSION:=b0c100f1a260d807df450019774993c761beb79d
-PKG_SOURCE:=rkbin-$(PKG_SOURCE_VERSION).tar.gz
-PKG_SOURCE_URL_FILE:=$(PKG_SOURCE_VERSION).tar.gz
-PKG_SOURCE_URL:=https://github.com/rockchip-linux/rkbin/archive/
-PKG_HASH:=c6ebf8ab556e071e3b067540e95aecff650143f0c97e129cd40c837a4f11a881
+PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.bz2
+PKG_SOURCE_URL:=https://gitlab.com/rk3588_linux/rk/rkbin/-/archive/$(PKG_VERSION)/
+PKG_HASH:=06e17b198d8e77008dbe188ee9cc5ec4ca2b03a8a998c66677e0b23db0a7bed9
 
 PKG_MAINTAINER:=Tianling Shen <cnsztl@immortalwrt.org>
 
-PKG_BUILD_DIR:=$(BUILD_DIR)/rkbin-$(BUILD_VARIANT)/rkbin-$(PKG_SOURCE_VERSION)
-
 include $(INCLUDE_DIR)/package.mk
+include ./atf-version.mk
 
-define Package/arm-trusted-firmware-rockchip-vendor
-    SECTION:=boot
-    CATEGORY:=Boot Loaders
-    TITLE:=ARM Trusted Firmware for Rockchip
+define Trusted-Firmware-A/Default
+  NAME:=Rockchip $(1)
+  BUILD_TARGET:=rockchip
 endef
 
-define Package/arm-trusted-firmware-rk3328
-    $(Package/arm-trusted-firmware-rockchip-vendor)
-    DEPENDS:=@TARGET_rockchip_armv8
-    VARIANT:=rk3328
+define Trusted-Firmware-A/rk3568
+  BUILD_SUBTARGET:=rk35xx
+  ATF:=rk35/$(RK3568_ATF)
+  DDR:=rk35/$(RK3568_DDR)
 endef
 
-define Package/arm-trusted-firmware-rk3399
-    $(Package/arm-trusted-firmware-rockchip-vendor)
-    DEPENDS:=@TARGET_rockchip_armv8
-    VARIANT:=rk3399
+define Trusted-Firmware-A/rk3588
+  BUILD_SUBTARGET:=rk35xx
+  ATF:=rk35/$(RK3588_ATF)
+  DDR:=rk35/$(RK3588_DDR)
 endef
 
-define Package/arm-trusted-firmware-rk3568
-    $(Package/arm-trusted-firmware-rockchip-vendor)
-    DEPENDS:=@TARGET_rockchip_rk35xx
-    VARIANT:=rk3568
-endef
-
-define Package/arm-trusted-firmware-rk3588
-    $(Package/arm-trusted-firmware-rockchip-vendor)
-    DEPENDS:=@TARGET_rockchip_rk35xx
-    VARIANT:=rk3588
-endef
-
-define Build/Configure
-	$(SED) 's,$$$$(PKG_BUILD_DIR),$(PKG_BUILD_DIR),g' $(PKG_BUILD_DIR)/trust.ini
-	$(SED) 's,$$$$(VARIANT),$(BUILD_VARIANT),g' $(PKG_BUILD_DIR)/trust.ini
-	$(call Build/Configure/Default)
-endef
+TFA_TARGETS:= \
+	rk3568 \
+	rk3588
 
 define Build/Compile
-	$(CURDIR)/pack-firmware.sh build $(BUILD_VARIANT) '$(PKG_BUILD_DIR)'
+	# This comment is the workaround for "extraneous 'endif'" error
+ifneq ($(LOADER),)
+	( \
+		pushd $(PKG_BUILD_DIR) ; \
+		$(SED) 's,$$$$(PKG_BUILD_DIR),$(PKG_BUILD_DIR),g' trust.ini ; \
+		$(SED) 's,$$$$(VARIANT),$(BUILD_VARIANT),g' trust.ini ; \
+		./tools/mkimage -n $(BUILD_VARIANT) -T rksd -d bin/$(DDR) \
+			$(BUILD_VARIANT)-idbloader.bin ; \
+		cat bin/$(LOADER) >> $(BUILD_VARIANT)-idbloader.bin ; \
+		./tools/trust_merger --replace bl31.elf bin/$(ATF) trust.ini ; \
+		popd ; \
+	)
+endif
 endef
 
-define Build/InstallDev
-	$(CURDIR)/pack-firmware.sh install $(BUILD_VARIANT) '$(PKG_BUILD_DIR)' '$(STAGING_DIR_IMAGE)'
+define Package/trusted-firmware-a/install
+	$(INSTALL_DIR) $(STAGING_DIR_IMAGE)
+
+	$(CP) $(PKG_BUILD_DIR)/bin/$(ATF) $(STAGING_DIR_IMAGE)/
+ifneq ($(LOADER),)
+	$(CP) $(PKG_BUILD_DIR)/tools/loaderimage $(STAGING_DIR_IMAGE)/
+	$(CP) $(PKG_BUILD_DIR)/$(BUILD_VARIANT)-idbloader.bin $(STAGING_DIR_IMAGE)/
+	$(CP) $(PKG_BUILD_DIR)/$(BUILD_VARIANT)-trust.bin $(STAGING_DIR_IMAGE)/
+else
+	$(CP) $(PKG_BUILD_DIR)/bin/$(DDR) $(STAGING_DIR_IMAGE)/
+endif
 endef
 
-define Package/arm-trusted-firmware-rk3328/install
-endef
-
-define Package/arm-trusted-firmware-rk3399/install
-endef
-
-define Package/arm-trusted-firmware-rk3568/install
-endef
-
-define Package/arm-trusted-firmware-rk3588/install
-endef
-
-$(eval $(call BuildPackage,arm-trusted-firmware-rk3328))
-$(eval $(call BuildPackage,arm-trusted-firmware-rk3399))
-$(eval $(call BuildPackage,arm-trusted-firmware-rk3568))
-$(eval $(call BuildPackage,arm-trusted-firmware-rk3588))
+$(eval $(call BuildPackage/Trusted-Firmware-A))
