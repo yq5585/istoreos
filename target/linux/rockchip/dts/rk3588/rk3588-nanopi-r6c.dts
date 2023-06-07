@@ -25,7 +25,7 @@
 };
 
 &lan2_led {
-	label = "user_led";
+	label = "green:user";
 };
 
 &pcie2x1l2 {

@@ -128,6 +128,7 @@ board_set_iface_smp_affinity() {
         set_iface_cpumask 4 eth1
         ;;
     friendlyelec,nanopi-r6s|\
+    friendlyelec,nanopi-r6c|\
     friendlyelec,nanopi-r5s)
         set_iface_cpumask 2 eth0
         if ethtool -i eth1 | grep -Fq 'driver: r8169'; then
