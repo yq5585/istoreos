@@ -24,6 +24,9 @@ rockchip_setup_interfaces()
 	hinlink,opc-h68k)
 		ucidef_set_interfaces_lan_wan 'eth1 eth2 eth3' 'eth0'
 		;;
+	friendlyelec,nanopi-r6s)
+		ucidef_set_interfaces_lan_wan 'eth2 eth0' 'eth1'
+		;;
 	*)
 		ucidef_set_interface_lan 'eth0'
 		;;
@@ -47,12 +50,16 @@ rockchip_setup_macs()
 	firefly,rk3568-roc-pc|\
 	friendlyelec,nanopi-r5s|\
 	friendlyelec,nanopi-r5c|\
+	friendlyelec,nanopi-r6s|\
 	hinlink,opc-h68k|\
 	hinlink,opc-h66k|\
 	fastrhino,r66s|\
 	fastrhino,r68s)
 		wan_mac=$(generate_mac_from_mmc)
 		lan_mac=$(macaddr_add "$wan_mac" 1)
+		;;
+	*)
+		lan_mac=$(generate_mac_from_mmc)
 		;;
 	esac
 
