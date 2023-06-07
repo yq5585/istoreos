@@ -104,6 +104,6 @@ $(call Device/rk3588_combined_friendlyelec)
   DEVICE_MODEL := NanoPi R6S/R6C
   SUPPORTED_DEVICES += friendlyelec,nanopi-r6s friendlyelec,nanopi-r6c
   DEVICE_DTS := rk3588-nanopi-r6s rk3588-nanopi-r6c
-  DEVICE_PACKAGES := kmod-r8125
+  DEVICE_PACKAGES := kmod-r8125 kmod-nvme kmod-thermal
 endef
 TARGET_DEVICES += friendlyarm_nanopi-r6s
